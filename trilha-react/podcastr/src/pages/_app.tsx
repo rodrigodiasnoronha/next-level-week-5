@@ -6,18 +6,21 @@ import styles from "../styles/app.module.scss";
 
 import Header from "../components/Header";
 import Player from "../components/Player";
+import { PlayerContextProvider } from "../contexts/PlayerContext";
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
-  return (
-    <div className={styles.wrapper}>
-      <main>
-        <Header />
-        <Component {...pageProps} />
-      </main>
+    return (
+        <PlayerContextProvider>
+            <div className={styles.wrapper}>
+                <main>
+                    <Header />
+                    <Component {...pageProps} />
+                </main>
 
-      <Player />
-    </div>
-  );
+                <Player />
+            </div>
+        </PlayerContextProvider>
+    );
 };
 
 export default MyApp;

@@ -3,10 +3,11 @@ import { ptBR } from "date-fns/locale";
 import { GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import { convertDurationToTimeString } from "../utils/convertDurationToTimeString";
 import api from "../services/api";
 import styles from "./home.module.scss";
+import { PlayerContext } from "../contexts/PlayerContext";
 
 // geração estatica
 export const getStaticProps: GetStaticProps = async () => {
@@ -58,6 +59,8 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ allEpisodes, latestEpisodes }) => {
+    const player = useContext(PlayerContext);
+
     return (
         <div className={styles.homepage}>
             <section className={styles.latestEpisodes}>
@@ -84,7 +87,7 @@ const Home: React.FC<HomeProps> = ({ allEpisodes, latestEpisodes }) => {
                                 <span>{episode.durationAsString}</span>
                             </div>
 
-                            <button type="button">
+                            <button type="button" onClick={() => player.play(episode)}>
                                 <img src="/play-green.svg" alt="Tocar" title="Tocar" />
                             </button>
                         </li>
