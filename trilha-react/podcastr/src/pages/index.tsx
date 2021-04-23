@@ -8,6 +8,7 @@ import { convertDurationToTimeString } from "../utils/convertDurationToTimeStrin
 import api from "../services/api";
 import styles from "./home.module.scss";
 import { PlayerContext } from "../contexts/PlayerContext";
+import Head from "next/head";
 
 // geração estatica
 export const getStaticProps: GetStaticProps = async () => {
@@ -61,13 +62,19 @@ interface HomeProps {
 const Home: React.FC<HomeProps> = ({ allEpisodes, latestEpisodes }) => {
     const player = useContext(PlayerContext);
 
+    const episodeList = [...latestEpisodes, ...allEpisodes];
+
     return (
         <div className={styles.homepage}>
+            <Head>
+                <title>Home | Podcastr</title>
+            </Head>
+
             <section className={styles.latestEpisodes}>
                 <h2>Últimos lançamentos</h2>
 
                 <ul>
-                    {latestEpisodes.map((episode) => (
+                    {latestEpisodes.map((episode, index) => (
                         <li key={episode.id}>
                             <Image
                                 width={192}
@@ -87,7 +94,7 @@ const Home: React.FC<HomeProps> = ({ allEpisodes, latestEpisodes }) => {
                                 <span>{episode.durationAsString}</span>
                             </div>
 
-                            <button type="button" onClick={() => player.play(episode)}>
+                            <button type="button" onClick={() => player.playList(episodeList, index)}>
                                 <img src="/play-green.svg" alt="Tocar" title="Tocar" />
                             </button>
                         </li>
@@ -111,7 +118,7 @@ const Home: React.FC<HomeProps> = ({ allEpisodes, latestEpisodes }) => {
                     </thead>
 
                     <tbody>
-                        {allEpisodes.map((episode) => (
+                        {allEpisodes.map((episode, index) => (
                             <tr key={episode.id}>
                                 <td style={{ width: 72 }}>
                                     <Image
@@ -136,7 +143,10 @@ const Home: React.FC<HomeProps> = ({ allEpisodes, latestEpisodes }) => {
                                 <td>{episode.durationAsString}</td>
 
                                 <td>
-                                    <button type="button">
+                                    <button
+                                        type="button"
+                                        onClick={() => player.playList(episodeList, index + latestEpisodes.length)}
+                                    >
                                         <img src="/play-green.svg" alt="Tocar episódio" title="Tocar episódio" />
                                     </button>
                                 </td>

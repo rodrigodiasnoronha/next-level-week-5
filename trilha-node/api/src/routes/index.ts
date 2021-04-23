@@ -1,13 +1,15 @@
 import { Router } from 'express'
-import { getCustomRepository } from 'typeorm'
-import { SettingsRepository } from '../database/repositories/SettingRepository'
 
-import { SetttingController } from '../database/controllers/SettingController'
+import { SetttingController } from '../controllers/SettingController'
+import { UserController } from '../controllers/UserController'
 
 const settingController = new SetttingController()
+const userController = new UserController()
 
 const routes = Router()
 
 routes.post('/settings', settingController.create)
+
+routes.post('/users', userController.create)
 
 export default routes
